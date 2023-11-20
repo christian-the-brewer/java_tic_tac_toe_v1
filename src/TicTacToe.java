@@ -9,6 +9,7 @@ public class TicTacToe {
                 {'7', '8', '9'},
         };
         boolean gameOver = false;
+        int turnCount = 0;
 
         printBoard(board);
         Scanner scanner = new Scanner(System.in);
@@ -16,10 +17,25 @@ public class TicTacToe {
 
 
             playerMove(board, scanner);
+            turnCount += 1;
+            isGameOver(turnCount, gameOver);
             computerTurn(board);
+            turnCount += 1;
+            isGameOver(turnCount, gameOver);
             printBoard(board);
         }
         scanner.close();
+    }
+
+    private static boolean isGameOver(int turnCount, boolean gameOver) {
+        if (turnCount > 8) {
+            gameOver = true;
+            System.out.println("Game over!");
+        }
+        return gameOver;
+    }
+
+    private record gameState(boolean gameOver, int turnCount) {
     }
 
     private static void computerTurn(char[][] board) {
@@ -63,11 +79,18 @@ public class TicTacToe {
     }
 
     private static void playerMove(char[][] board, Scanner scanner) {
+        String userInput;
+        while (true) {
         System.out.println("Where would you like to play? (1-9):");
-
-        String userInput = scanner.nextLine();
-
+        userInput = scanner.nextLine();
+            if (isMoveValid(board, Integer.parseInt(userInput))) {
+                break;
+            } else {
+                System.out.println("That place is taken!");
+            }
+        }
         placeMove(board, userInput, 'X');
+
 
     }
 
