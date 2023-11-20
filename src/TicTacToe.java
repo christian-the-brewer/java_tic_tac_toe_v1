@@ -8,13 +8,21 @@ public class TicTacToe {
                 {'4', '5', '6'},
                 {'7', '8', '9'},
         };
+        boolean gameOver = false;
 
         printBoard(board);
         Scanner scanner = new Scanner(System.in);
+        while (!gameOver) {
 
-        playerMove(scanner, board);
-        printBoard(board);
 
+            playerMove(board, scanner);
+            computerTurn(board);
+            printBoard(board);
+        }
+        scanner.close();
+    }
+
+    private static void computerTurn(char[][] board) {
         Random randomNum = new Random();
         int computerMove;
         while (true) {
@@ -23,10 +31,8 @@ public class TicTacToe {
                 break;
             }
         }
+        System.out.println("Computer chose " + computerMove);
         placeMove(board, Integer.toString(computerMove), 'O');
-        printBoard(board);
-
-
     }
 
     private static boolean isMoveValid(char[][] board, int position) {
@@ -56,8 +62,9 @@ public class TicTacToe {
         }
     }
 
-    private static void playerMove(Scanner scanner, char[][] board) {
+    private static void playerMove(char[][] board, Scanner scanner) {
         System.out.println("Where would you like to play? (1-9):");
+
         String userInput = scanner.nextLine();
 
         placeMove(board, userInput, 'X');
